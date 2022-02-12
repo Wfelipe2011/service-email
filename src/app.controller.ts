@@ -1,12 +1,10 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { User } from './database/entity/UserEntity';
-import { MongoDBAdapter } from './database/MondoDBAdapter/MongoDBAdapter';
+import { IUser } from './database/entity/UserEntity';
 
-@Controller()
+@Controller('users')
 export class AppController {
-  constructor(private readonly appService: AppService) {
-  }
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   async getHello() {
@@ -14,7 +12,7 @@ export class AppController {
   }
 
   @Post()
-  async create(){
-    return this.appService.create()
+  async create(@Body() user: IUser) {
+    return this.appService.create(user);
   }
 }

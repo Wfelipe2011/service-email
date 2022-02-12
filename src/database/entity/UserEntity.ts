@@ -1,31 +1,39 @@
-import { mongoose } from "../MondoDBAdapter/infra";
+import { mongoose } from '../MondoDBAdapter/infra';
 
-export interface IUser{
-  name: string,
-  email: string,
-  cpf: string
+export interface IUser {
+  name: string;
+  emailForNotification: string;
+  service: 'nodemail' | 'sendgrid';
+  acess: {
+    host: string;
+    port: number;
+    auth: {
+      user: string;
+      pass: string;
+    };
+    apiKey: string;
+    emailFrom: string;
+  };
 }
 
 const UserEntity = {
   name: {
     type: String,
     required: true,
-    // minlength: 3,
-    // maxlength: 100,
   },
-  email: {
+  emailForNotification: {
     type: String,
     required: true,
     unique: true,
   },
-  cpf: {
+  service: {
     type: String,
     required: true,
-    unique: true,
-  }
+  },
+  acess: {
+    type: Object,
+    required: true,
+  },
 };
 
-export const User = mongoose.model(
-  "user",
-  new mongoose.Schema(UserEntity)
-);
+export const User = mongoose.model('user', new mongoose.Schema(UserEntity));

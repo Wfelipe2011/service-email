@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { mongoose } from './infra';
 
 export class MongoDBAdapter {
@@ -7,7 +8,7 @@ export class MongoDBAdapter {
     try {
       return this.entity.find();
     } catch (error) {
-      throw new Error('Error! ' + error.message);
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -15,7 +16,7 @@ export class MongoDBAdapter {
     try {
       return this.entity.findOne(obj);
     } catch (error) {
-      throw new Error('Error! ' + error.message);
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -23,7 +24,7 @@ export class MongoDBAdapter {
     try {
       return await new this.entity(obj).save();
     } catch (error) {
-      throw new Error('Error! ' + error.message);
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -32,7 +33,7 @@ export class MongoDBAdapter {
       await this.entity.updateOne({ _id: id }, obj);
       return this.entity.findById(id); // fim de consulta
     } catch (error) {
-      throw new Error('Error! ' + error.message);
+      throw new BadRequestException(error.message);
     }
   }
 
