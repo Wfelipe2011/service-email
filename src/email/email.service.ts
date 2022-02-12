@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-
-
+import { EmailAdapter, ConfigEmailAdapter } from './adapter/email.adapter';
+import { SendGridAdapter } from './adapter/sendGrid-email.adapter';
 @Injectable()
 export class EmailService {
   emailAdapter: EmailAdapter;
@@ -11,8 +11,8 @@ export class EmailService {
   public async sendEmailFinancialAlterBankData() {
     try {
       const msg: ConfigEmailAdapter = {
-        to: FINANCEIRO_EMAIL,
-        from: EMAIL_ADM,
+        to: '',
+        from: '',
         subject: '',
         html: '',
       };
@@ -25,8 +25,8 @@ export class EmailService {
   public async sendEmailFeedback({ title, message }) {
     try {
       const msg: ConfigEmailAdapter = {
-        to: EMAIL_SUPPORT,
-        from: EMAIL_ADM,
+        to: '',
+        from: '',
         subject: title,
         text: message,
       };
