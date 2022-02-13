@@ -1,13 +1,20 @@
-### Para registrar
+# Email Service
 
-- HTTP Post
-  - Body:
+## api
+
+- https://email-tekio.herokuapp.com
+
+## Para registrar
+
+### HTTP Post: /users
+
+- Body:
 
 ```json
 {
-  "name": "",
+  "name": "string",
   "emailForNotification": "string",
-  "service": "sendgrid",
+  "service": "nodemailer",
   "acess": {
     "host": "string",
     "port": "number",
@@ -15,10 +22,18 @@
       "user": "string",
       "pass": "string"
     },
-    "apiKey": "string",
-    "emailFrom": "string"
+    "secure": false,
+    "tls": {
+      "rejectUnauthorized": false
+    }
   }
 }
 ```
 
 Depois disso você recebera no seu email uma chave de indentificação. Com ela você poderá deletar ou fazer alterações do cadastro.
+
+## Para recuperar sua Key
+
+### Http Get: users/"email"
+
+- Você receberá no seu email a sua chave key

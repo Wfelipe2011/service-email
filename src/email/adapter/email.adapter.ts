@@ -1,7 +1,7 @@
 export interface ConfigEmailAdapter {
   to: string | string[] | any;
   cc?: string | string[];
-  from: string;
+  from?: string;
   text?: string;
   subject?: string;
   html?: string;

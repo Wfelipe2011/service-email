@@ -4,7 +4,7 @@ import { mongoose } from './infra';
 export class MongoDBAdapter {
   constructor(readonly entity) {}
 
-  getAll() {
+  getAll<T>(): T {
     try {
       return this.entity.find();
     } catch (error) {
@@ -12,7 +12,7 @@ export class MongoDBAdapter {
     }
   }
 
-  getOne(obj: any) {
+  async getOne<T>(obj): Promise<T> {
     try {
       return this.entity.findOne(obj);
     } catch (error) {
@@ -20,7 +20,7 @@ export class MongoDBAdapter {
     }
   }
 
-  async save(obj) {
+  async save<T>(obj: T) {
     try {
       return await new this.entity(obj).save();
     } catch (error) {

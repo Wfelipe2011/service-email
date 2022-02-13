@@ -1,38 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { EmailAdapter, ConfigEmailAdapter } from './adapter/email.adapter';
-import { SendGridAdapter } from './adapter/sendGrid-email.adapter';
+import { MongoDBAdapter } from '../database/MondoDBAdapter/MongoDBAdapter';
+import { User } from 'src/database/entity/UserEntity';
+import { NodeMailerAdapter } from './adapter/nodeMailer.adapter';
+import { IUser } from '../database/entity/UserEntity';
 @Injectable()
 export class EmailService {
   emailAdapter: EmailAdapter;
+  mongoDBAdapter: MongoDBAdapter;
   constructor() {
-    this.emailAdapter = new SendGridAdapter('');
+    this.mongoDBAdapter = new MongoDBAdapter(User);
   }
 
-  public async sendEmailFinancialAlterBankData() {
+  public async notifyService(configEmailAdapter: ConfigEmailAdapter) {
+    const { emailForNotification } = await this.factoryNodeMailer(
+      process.env.SERVICE_TEKIO,
+    );
     try {
-      const msg: ConfigEmailAdapter = {
-        to: '',
-        from: '',
-        subject: '',
-        html: '',
-      };
-      await this.emailAdapter.send(msg);
+      this.emailAdapter.send({
+        ...configEmailAdapter,
+        from: emailForNotification,
+      });
     } catch (error) {
       console.log('alert Erro Email => ' + JSON.stringify(error));
     }
   }
 
-  public async sendEmailFeedback({ title, message }) {
-    try {
-      const msg: ConfigEmailAdapter = {
-        to: '',
-        from: '',
-        subject: title,
-        text: message,
-      };
-      await this.emailAdapter.send(msg);
-    } catch (error) {
-      console.log('alert Erro Email => ' + JSON.stringify(error));
-    }
+  async factoryNodeMailer(id: string) {
+    const entity = await this.mongoDBAdapter.getOne<IUser>({ id });
+    this.emailAdapter = new NodeMailerAdapter(entity.acess);
+    return { emailForNotification: entity.emailForNotification };
   }
 }

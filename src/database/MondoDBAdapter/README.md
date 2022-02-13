@@ -22,11 +22,7 @@ import * as mongoose from "mongoose";
 export class MongoDBConect {
   static async startMongo() {
     await mongoose
-      .connect("mongodb://localhost/my_database", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-      })
+      .connect("mongodb://localhost/my_database")
       .then(() => {
         console.log("Conectado ao Banco MongoDB");
       })
