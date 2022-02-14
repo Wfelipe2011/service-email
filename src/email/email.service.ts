@@ -4,6 +4,7 @@ import { MongoDBAdapter } from '../database/MondoDBAdapter/MongoDBAdapter';
 import { User } from 'src/database/entity/UserEntity';
 import { NodeMailerAdapter } from './adapter/nodeMailer.adapter';
 import { IUser } from '../database/entity/UserEntity';
+import { SkyotLogger } from 'src/logger/SkyotLogger.decorate';
 @Injectable()
 export class EmailService {
   emailAdapter: EmailAdapter;
@@ -11,7 +12,8 @@ export class EmailService {
   constructor() {
     this.mongoDBAdapter = new MongoDBAdapter(User);
   }
-
+  
+  @SkyotLogger()
   public async notifyService(configEmailAdapter: ConfigEmailAdapter) {
     const { emailForNotification } = await this.factoryNodeMailer(
       process.env.SERVICE_TEKIO,

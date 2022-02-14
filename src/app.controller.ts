@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { IUser } from './database/entity/UserEntity';
-import { LoggerService } from './decorate/logger.decorate';
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

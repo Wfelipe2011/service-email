@@ -1,6 +1,6 @@
-import { LoggerPino as Logger } from '../logger';
+import { skyotLogger } from "./SkyotLoggerPino";
 
-export function LoggerService(params?: { isObject: boolean }) {
+export function SkyotLogger(params?: { isObject: boolean }) {
   const state = {
     propertyKey: null,
     args: null,
@@ -25,20 +25,16 @@ export function LoggerService(params?: { isObject: boolean }) {
 
   async function coreDecorator() {
     const { args, methodOriginal, propertyKey, context } = state;
-    logger(`Method => ${propertyKey}`);
+    skyotLogger(`Method => ${propertyKey}`);
     checkLoggerObject();
     const result = await methodOriginal.apply(context, args);
-    logger(`${propertyKey} return => ${result}`);
+    skyotLogger(`${propertyKey} return => ${result}`);
     return result;
   }
 
   function checkLoggerObject() {
-    if (!params?.isObject) return logger(`Params => ${state.args}`);
-    logger(` --- Object ---`);
-    logger(state.args);
-  }
-
-  function logger(message: any | any[]) {
-    Logger.info(message);
+    if (!params?.isObject) return skyotLogger(`Params => ${state.args}`);
+    skyotLogger(` --- Object ---`);
+    skyotLogger(state.args);
   }
 }

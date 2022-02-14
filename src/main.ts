@@ -2,7 +2,7 @@ require('dotenv').config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MongoDBConect } from './database/MondoDBAdapter/infra';
-import { LoggerPino } from './logger';
+import { skyotLogger} from './logger/SkyotLoggerPino';
 import pinoHttp from 'pino-http';
 
 async function bootstrap() {
@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // app.use(pinoHttp({ logger: LoggerPino }));
   app.listen(process.env.PORT, () => {
-      LoggerPino.info(`Servidor está rodando na porta: ${process.env.PORT}`);
+    skyotLogger(`Servidor está rodando na porta: ${process.env.PORT}`);
     });
 }
 bootstrap();

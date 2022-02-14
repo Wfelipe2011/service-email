@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUser, User } from './database/entity/UserEntity';
 import { MongoDBAdapter } from './database/MondoDBAdapter/MongoDBAdapter';
 import { EmailService } from './email/email.service';
-import { inspect } from './decorate/inspect.decorate';
-import { LoggerService } from './decorate/logger.decorate';
+import { SkyotLogger } from './logger/SkyotLogger.decorate';
 
 @Injectable()
 export class AppService {
@@ -26,7 +25,7 @@ export class AppService {
     };
   }
 
-  @LoggerService()
+  @SkyotLogger()
   async getByKey({ emailForNotification }): Promise<string> {
     const response = await this.mongoDBAdapter.getOne<IUser>({
       emailForNotification,
@@ -34,7 +33,7 @@ export class AppService {
     if (!response)
       throw new NotFoundException(`Not found email: ${emailForNotification}`);
     const message = this.getRecoveryKeyMessage(response);
-    await this.emailService.notifyService(message);
+    // await this.emailService.notifyService(message);
     return `Sua chave key foi enviada para o seu email: ${emailForNotification}`;
   }
 
