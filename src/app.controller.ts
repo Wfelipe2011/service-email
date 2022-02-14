@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { IUser } from './database/entity/UserEntity';
+import { LoggerService } from './decorate/logger.decorate';
 
 @Controller()
 export class AppController {
@@ -8,7 +9,7 @@ export class AppController {
 
   @Get('users/:email')
   async getByKey(@Param() { email }: { email: string }) {
-    return this.appService.getByKey(email);
+    return this.appService.getByKey({ emailForNotification: email });
   }
 
   @Post('users')

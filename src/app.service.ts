@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUser, User } from './database/entity/UserEntity';
 import { MongoDBAdapter } from './database/MondoDBAdapter/MongoDBAdapter';
 import { EmailService } from './email/email.service';
+import { inspect } from './decorate/inspect.decorate';
+import { LoggerService } from './decorate/logger.decorate';
 
 @Injectable()
 export class AppService {
@@ -24,7 +26,8 @@ export class AppService {
     };
   }
 
-  async getByKey(emailForNotification: string): Promise<string> {
+  @LoggerService()
+  async getByKey({ emailForNotification }): Promise<string> {
     const response = await this.mongoDBAdapter.getOne<IUser>({
       emailForNotification,
     });
